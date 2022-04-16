@@ -1,0 +1,143 @@
+<html>
+
+<head>
+    <style>
+        table {
+            font-family: 'Rock Salt', cursive;
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        td,
+        th {
+            border: 2px solid #000000;
+            padding: 10px;
+            text-align: left;
+        }
+
+        tr:nth-child(odd) {
+            background-color: rgb(226, 219, 219);
+        }
+
+        tr:nth-child(even) {
+            background-color: #cecaca;
+        }
+
+        table {
+            max-width: 100%;
+        }
+
+        th {
+            background-color: rgb(61, 61, 61);
+            color: #fff;
+        }
+
+        th,
+        td {
+            text-align: left;
+            padding: 1em 1em;
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.min.js"></script>
+</head>
+
+<body>
+    <script type="text/javascript">
+        var intervalId = setInterval(function () {
+            socket.send(JSON.stringify({
+                'message': 'REFRESH'
+            }))
+        }, 5000);
+
+    </script>
+
+    <table>
+        <tr>
+            <th>Logo</th>
+            <th>Name</th>
+            <th>Price</th>
+            <th>Real-time chart</th>
+        </tr>
+        {%for currency in currencies %}
+        <tr>
+            <td><img src={{currency.image}} height='200'></td>
+            <td>{{currency.name}}</td>
+            <td id={{currency.id}}>{{currency.current_price}} USD</td>
+            <td>
+                <canvas id={{currency.name}}></canvas>
+            </td>
+        </tr>
+        {%endfor%}
+    </table>
+
+    <script>
+        xValue = 0;
+        dps = [];
+        "{%for currency in currencies %}"
+        dps["{{currency.id}}"] = [];
+        dps["{{currency.id}}"].push({ x: xValue, y: parseFloat("{{currency.current_price}}") });
+        "{%endfor%}"
+        myChart = [];
+        for (key in dps) {
+            const ctx = document.getElementById(key.charAt(0).toUpperCase() + key.slice(1)).getContext('2d');
+            myChart[key] = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: [dps[key][0]['x']],
+                    datasets: [{
+                        label: key.concat(" price"),
+                        data: [dps[key][0]['y']],
+                        backgroundColor: [
+                            'rgba(141,2,179, 0.5)'
+                        ],
+                        borderColor: [
+                            'rgba(141,2,179, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        yAxes: {
+                            title: {
+                                display: true,
+                                text: "Price [USD]"
+                            }
+                        },
+                        xAxes: {
+                            title: {
+                                display: true,
+                                text: "Time [s]"
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        let url = `ws://${window.location.host}/ws/socket-server/`
+        const socket = new WebSocket(url)
+        socket.onmessage = function (e) {
+            let data = JSON.parse(e.data)
+            if (data['type'] == 'REFRESH') {
+                xValue += 5;
+                for (var key in data['message']) {
+                    var value = data['message'][key]['usd'];
+                    var str = `<td id = ${key}>${value} USD</td>`;
+                    var Obj = document.getElementById(key);
+                    if (Obj.outerHTML) {
+                        Obj.outerHTML = str;
+                    }
+                    newData = myChart[key].data.datasets[0].data;
+                    newLabels = myChart[key].data.labels;
+                    newLabels.push(xValue);
+                    newData.push(value);
+                    myChart[key].data.datasets[0].data = newData;
+                    myChart[key].update();
+                }
+            }
+        }
+    </script>
+</body>
+
+</html>
