@@ -6,9 +6,9 @@ Dane o kryptowalutach są bieżąco aktualizowane przy pomocy protokołu websock
 Dzięcki cyklicznie odczytywanym danym z serwisu coingecko, strona buduje dla użytkownika w czasie rzeczywistym wykresy zmian cen kryptowalut.
 
 Aby uruchomić projekt, należy uruchomić serwer korzystając z polecenia
-'''
+```
 python manage.py runserver
-'''
-w folderze project w którym znajduje się plik manage.py.
+```
+będąc w folderze project w którym znajduje się plik manage.py.
 Następnie nalezy połączyć się z poziomu przeglądarki z adresem wyświetlonym w konsoli.
 
