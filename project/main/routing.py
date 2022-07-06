@@ -1,4 +1,3 @@
-from asyncio.proactor_events import constants
 from django.urls import re_path
 from . import cons
 

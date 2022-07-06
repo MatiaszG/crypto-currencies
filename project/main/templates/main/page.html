@@ -78,6 +78,7 @@
         dps["{{currency.id}}"].push({ x: xValue, y: parseFloat("{{currency.current_price}}") });
         "{%endfor%}"
         myChart = [];
+
         for (key in dps) {
             const ctx = document.getElementById(key.charAt(0).toUpperCase() + key.slice(1)).getContext('2d');
             myChart[key] = new Chart(ctx, {
@@ -117,6 +118,7 @@
 
         let url = `ws://${window.location.host}/ws/socket-server/`
         const socket = new WebSocket(url)
+
         socket.onmessage = function (e) {
             let data = JSON.parse(e.data)
             if (data['type'] == 'REFRESH') {
@@ -125,6 +127,7 @@
                     var value = data['message'][key]['usd'];
                     var str = `<td id = ${key}>${value} USD</td>`;
                     var Obj = document.getElementById(key);
+
                     if (Obj.outerHTML) {
                         Obj.outerHTML = str;
                     }
