@@ -2,8 +2,9 @@
 
 Projekt jest napisany w języku Python przy pomocy frameworka django.
 Realizuje on stronę internetową, przedstawiającą dane na temat kryptowalut, pobrane przez API strony https://www.coingecko.com/.
-Dane o kryptowalutach są bieżąco aktualizowane przy pomocy protokołu websocket.
-Dzięki cyklicznie odczytywanym danym z serwisu coingecko, strona buduje dla użytkownika w czasie rzeczywistym wykresy zmian cen kryptowalut.
+Dane o kryptowalutach są aktualizowane na bieżąco, przy pomocy protokołu websocket.
+Dzięki cyklicznie odczytywanym danym z serwisu coingecko, strona buduje dla użytkownika w czasie rzeczywistym wykresy cen kryptowalut.
+Przed uruchomieniem projektu należy zainstalować moduły takie jak django, requests oraz channels.
 
 Aby uruchomić projekt, należy uruchomić serwer korzystając z polecenia
 ```
