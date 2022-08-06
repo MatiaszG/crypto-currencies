@@ -1,0 +1,91 @@
+<html>
+
+<head>
+    <style>
+        .navbar {
+            overflow: hidden;
+            background-color: #333;
+            top: 0;
+            width: 100%;
+        }
+
+        .navbar a {
+            float: left;
+            display: block;
+            color: #f2f2f2;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+        }
+
+        .navbar a:hover {
+            background: #ddd;
+            color: black;
+        }
+
+        .center {
+            display: flex;
+            justify-content: center;
+            font-family: 'Rock Salt', cursive;
+        }
+
+        body {
+            background-color: #cecaca;
+        }
+
+        #number {
+            width: 50px;
+        }
+
+        #main-div {
+            width: 50%;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="navbar" id="navbar">
+        <a href="../"> Click to go to the main page</a>
+    </div>
+    <div class="center">
+        <div id="main-div">
+            <h1>Cryptocurrency converter</h1>
+
+            <form action="/exchanges/" method="post">
+                <input name="number" id="number" type="number" value={% if number%} {{number}} {% else %} 1 {% endif %}
+                    step="0.01" min="0">
+                {% csrf_token %}
+                <select name="currency1">
+                    {% if currencies_list1 %}
+                    {%for currency in currencies_list1%}
+                    <option>{{currency}}</option>
+                    {%endfor%}
+                    {% else %}
+                    {%for currency in currencies%}
+                    <option>{{currency}}</option>
+                    {%endfor%}
+                    {% endif %}
+                </select>
+                ->
+                <select name="currency2">
+                    {% if currencies_list2 %}
+                    {%for currency in currencies_list2%}
+                    <option>{{currency}}</option>
+                    {%endfor%}
+                    {% else %}
+                    {%for currency in currencies%}
+                    <option>{{currency}}</option>
+                    {%endfor%}
+                    {% endif %}
+                </select>
+                <input type="submit" name="submit" value="Convert" />
+            </form>
+            {% if price %}
+            {% if number%} {{number}} {% else %} 1 {% endif %} {{currency1}} = {{price}} {{currency2}}
+            {% endif %}
+        </div>
+    </div>
+</body>
+
+</html>

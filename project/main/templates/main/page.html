@@ -2,9 +2,29 @@
 
 <head>
     <style>
+        .navbar {
+            overflow: hidden;
+            background-color: #333;
+            top: 0;
+            width: 100%;
+        }
+
+        .navbar a {
+            float: left;
+            display: block;
+            color: #f2f2f2;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+        }
+
+        .navbar a:hover {
+            background: #ddd;
+            color: black;
+        }
+
         table {
             font-family: 'Rock Salt', cursive;
-            
             width: 100%;
         }
 
@@ -47,6 +67,10 @@
         }, 5000);
 
     </script>
+
+    <div class="navbar" id="navbar">
+        <a href="exchanges"> Click to check exchange rates</a>
+    </div>
 
     <table>
         <tr>
