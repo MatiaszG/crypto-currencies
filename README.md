@@ -5,8 +5,8 @@ Realizuje on stronę internetową, przedstawiającą dane na temat kryptowalut, 
 Dane o kryptowalutach są aktualizowane na bieżąco, przy pomocy protokołu websocket.
 Dzięki cyklicznie odczytywanym danym z serwisu coingecko, strona buduje dla użytkownika w czasie rzeczywistym wykresy cen kryptowalut.
 Strona zawiera także funkcjonalnośc odpowiadającą za konwersję kryptowalut. Funkcjonalność ta również bazuje na API serwisu https://www.coingecko.com/.
-Przed uruchomieniem projektu należy zainstalować moduły takie jak django, requests oraz channels.
 
+Przed uruchomieniem projektu należy zainstalować moduły takie jak django, requests oraz channels.
 Aby uruchomić projekt, należy uruchomić serwer korzystając z polecenia
 ```
 python manage.py runserver
