@@ -42,5 +42,5 @@ def exchanges(response):
         price *= number
 
         context = {'currencies_list1': currencies_list1, 'currencies_list2': currencies_list2, 'price': price,
-                   'currency1': decrypter[currency1].upper(), 'currency2': decrypter[currency2].upper(), 'number':number}
+                   'currency1': decrypter[currency1].upper(), 'currency2': decrypter[currency2].upper(), 'number': number}
         return render(response, 'main/exchanges.html', context)
