@@ -1,10 +1,16 @@
 from django.shortcuts import render
 import requests
+from django.http import HttpResponse
 
 
 def index(response):
-    data = requests.get(
-        'https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=ethereum%2C%20bitcoin%2C%20cardano&order=market_cap_desc&per_page=100&page=1&sparkline=false').json()
+    resp = requests.get(
+        'https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=ethereum%2C%20bitcoin%2C%20cardano&order=market_cap_desc&per_page=100&page=1&sparkline=false')
+    
+    if resp.ok:
+        data = resp.json()
+    else:
+        return HttpResponse("<h1>ERROR</h1>")
 
     context = {'currencies': data}
     return render(response, 'main/page.html', context)
@@ -30,13 +36,21 @@ def exchanges(response):
         currencies_list2.insert(0, currency2)
 
         if(currency1 != 'USD'):
-            price_data = requests.get(
-                'https://api.coingecko.com/api/v3/coins/'+currency1[0].lower()+response.POST['currency1'][1:]+'?localization=flase&tickers=false&market_data=true&community_data=false&developer_data=false&sparkline=false').json()['market_data']['current_price']
-            price = price_data[decrypter[currency2]]
+            resp = requests.get(
+                'https://api.coingecko.com/api/v3/coins/'+currency1[0].lower()+response.POST['currency1'][1:]+'?localization=flase&tickers=false&market_data=true&community_data=false&developer_data=false&sparkline=false')
+            if resp.ok:
+                price_data = resp.json()['market_data']['current_price']
+                price = price_data[decrypter[currency2]]
+            else:
+                return HttpResponse("<h1>ERROR</h1>")
         elif(currency1 == 'USD' and currency2 != 'USD'):
-            price_data = requests.get(
-                'https://api.coingecko.com/api/v3/coins/'+currency2[0].lower()+response.POST['currency2'][1:]+'?localization=flase&tickers=false&market_data=true&community_data=false&developer_data=false&sparkline=false').json()['market_data']['current_price']
-            price = 1/price_data['usd']
+            resp = requests.get(
+                'https://api.coingecko.com/api/v3/coins/'+currency2[0].lower()+response.POST['currency2'][1:]+'?localization=flase&tickers=false&market_data=true&community_data=false&developer_data=false&sparkline=false')
+            if resp.ok:
+                price_data = resp.json()['market_data']['current_price']
+                price = 1/price_data['usd']
+            else:
+                return HttpResponse("<h1>ERROR</h1>")
         elif(currency1 == 'USD' and currency2 == 'USD'):
             price = 1
         price *= number
